@@ -1,0 +1,12 @@
+syntax = "proto3";
+package file;
+
+option go_package = "../file";
+
+import "template/properties.proto";
+import "template/store.proto";
+
+service Service {
+  rpc GetProperties(file.PropertiesRequest) returns (file.Properties);
+  rpc Store(file.StoreRequest) returns (file.StoreResponse);
+}

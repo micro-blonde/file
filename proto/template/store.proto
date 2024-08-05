@@ -1,0 +1,21 @@
+syntax = "proto3";
+package file;
+
+option go_package = "../file";
+
+import "template/file.proto";
+
+message StoreRequest {
+  bytes data = 1;
+  string type = 2;
+  string name = 3;
+  string extension=4;
+  string baseDir = 5;
+  int64 expiresInSecs = 6;
+  uint64 accountId = 7;
+}
+
+message StoreResponse {
+  file.File file = 1;
+  string url = 2;
+}
