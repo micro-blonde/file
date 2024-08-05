@@ -11,10 +11,10 @@ type File[T Model] struct {
 	ExpirationTime *time.Time
 	// AccountId issuer of file
 	AccountId *uint64
-	// Name of file
-	Name string
 	// Type is MIME type according to file extension
 	Type string
+	// Name of file
+	Name string
 	// Extension of file
 	Extension string
 	// Path as relative path of file

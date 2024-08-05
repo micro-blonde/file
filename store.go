@@ -4,10 +4,11 @@ import "time"
 
 type StoreRequest struct {
 	Data      []byte
-	Name      string
 	Type      string
+	Name      string
+	Extension string
 	BaseDir   *string
-	ExpiresAt *time.Time
+	ExpiresIn *time.Duration
 	AccountId *uint64
 }
 
