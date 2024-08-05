@@ -3,7 +3,6 @@ package file
 import "time"
 
 type StoreRequest struct {
-	Category  string
 	Data      []byte
 	Name      string
 	Type      string
