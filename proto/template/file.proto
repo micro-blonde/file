@@ -11,9 +11,10 @@ message File {
   string key = 2;
   int64 createdAt = 3;
   google.protobuf.Timestamp expirationTime = 4;
-  uint64 accountId = 6;
-  string name = 7;
-  string type = 8;
+  string type = 5;
+  string category = 6;
+  uint64 accountId = 7;
+  string name = 8;
   string path = 9;
   Meta meta = 10;
 }
