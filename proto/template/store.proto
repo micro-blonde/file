@@ -7,12 +7,13 @@ import "template/file.proto";
 
 message StoreRequest {
   bytes data = 1;
-  string type = 2;
-  string name = 3;
-  string extension=4;
-  string baseDir = 5;
-  int64 expiresInSecs = 6;
-  uint64 accountId = 7;
+  string category = 2;
+  string type = 3;
+  string name = 4;
+  string extension=5;
+  string baseDir = 6;
+  int64 expiresInSecs = 7;
+  uint64 accountId = 8;
 }
 
 message StoreResponse {
