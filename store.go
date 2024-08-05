@@ -4,6 +4,7 @@ import "time"
 
 type StoreRequest struct {
 	Data      []byte
+	Category  string
 	Type      string
 	Name      string
 	Extension string
