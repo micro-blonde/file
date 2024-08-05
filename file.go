@@ -9,10 +9,13 @@ type File[T Model] struct {
 	Key            string
 	CreatedAt      time.Time
 	ExpirationTime *time.Time
-	// AccountId issuer of file
-	AccountId *uint64
 	// Type is MIME type according to file extension
 	Type string
+	// Category of file to be able to group each kind
+	// of files existing in system(e.g. for oauth profile -> profile_picture)
+	Category string
+	// AccountId issuer of file
+	AccountId *uint64
 	// Name of file
 	Name string
 	// Extension of file
