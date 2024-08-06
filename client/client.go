@@ -51,7 +51,8 @@ func (c *client[T]) Initialize() {
 
 func (c *client[T]) loop() {
 	for {
-		if !c.grpcClient.IsConnected() {
+		if !c.grpcClient.IsReady() &&
+			!c.grpcClient.IsConnecting() {
 			c.properties = nil
 			err := c.grpcClient.Reconnect()
 			if err != nil {
@@ -63,7 +64,7 @@ func (c *client[T]) loop() {
 					Errorf("error on reconnect")
 			}
 		}
-		if c.properties == nil {
+		if c.properties == nil && c.grpcClient.IsReady() {
 			properties, err := c.grpcClient.GetProperties(
 				context.Background(), &pf.PropertiesRequest{})
 			if err != nil {
@@ -77,6 +78,6 @@ func (c *client[T]) loop() {
 				c.properties = properties
 			}
 		}
-		time.Sleep(time.Millisecond * 10)
+		time.Sleep(time.Second)
 	}
 }

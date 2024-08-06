@@ -15,7 +15,8 @@ import (
 type Client interface {
 	file.ServiceClient
 	Initialize()
-	IsConnected() bool
+	IsReady() bool
+	IsConnecting() bool
 	Reconnect() errors.Error
 }
 
@@ -32,7 +33,6 @@ func New(logger log.Logger, registry registry.Registry) Client {
 	c := &client{
 		logger: logger,
 		dialOptions: []grpc.DialOption{
-			grpc.WithBlock(),
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(32 * 10e6)),
 		},
@@ -68,15 +68,30 @@ func (c *client) ensureService() errors.Error {
 	return nil
 }
 
-func (c *client) IsConnected() bool {
+func (c *client) getState() connectivity.State {
+	if c.conn == nil {
+		return connectivity.Idle
+	}
+	return c.conn.GetState()
+}
+
+func (c *client) isState(state connectivity.State) bool {
+	if c.conn == nil {
+		return false
+	}
+	return state == c.conn.GetState()
+}
+
+func (c *client) IsReady() bool {
+	return c.isState(connectivity.Ready)
+}
+
+func (c *client) IsConnecting() bool {
 	if c.conn == nil {
 		return false
 	}
 	state := c.conn.GetState()
-	if state != connectivity.Ready && state != connectivity.Connecting {
-		return false
-	}
-	return true
+	return state == connectivity.Connecting
 }
 
 func (c *client) Reconnect() errors.Error {
@@ -93,7 +108,7 @@ func (c *client) Reconnect() errors.Error {
 			WithTrace("grpc.DialContext")
 	}
 	c.conn.Connect()
-	c.logger.Infof("connected. state: %s", c.conn.GetState().String())
+	c.logger.Infof("state: %s", c.conn.GetState().String())
 	c.client = file.NewServiceClient(c.conn)
 	return nil
 }
