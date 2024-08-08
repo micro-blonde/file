@@ -7,6 +7,9 @@ import (
 )
 
 func (c *client[T]) GetDownloadUrlByKey(key string) (string, errors.Error) {
+	if !c.config.enabled {
+		return "", notEnabledError
+	}
 	if c.properties == nil {
 		return "", errors.Internal().
 			WithId("ServiceUnavailable").

@@ -26,6 +26,7 @@ type Client[T file.Model] interface {
 
 type client[T file.Model] struct {
 	logger log.Logger
+	config config
 
 	grpcClient grpc.Client
 
@@ -33,8 +34,14 @@ type client[T file.Model] struct {
 }
 
 func New[T file.Model](logger log.Logger, registry registry.Registry) Client[T] {
+	var config config
+	if err := registry.Unmarshal(&config); err != nil {
+		panic(err)
+	}
+	config.Initialize()
 	c := &client[T]{
 		logger:     logger,
+		config:     config,
 		grpcClient: grpc.New(logger, registry),
 	}
 	return c
@@ -45,6 +52,9 @@ func (c *client[T]) GetGrpcClient() grpc.Client {
 }
 
 func (c *client[T]) Initialize() {
+	if !c.config.enabled {
+		return
+	}
 	c.grpcClient.Initialize()
 	go c.loop()
 }

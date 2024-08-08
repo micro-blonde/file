@@ -11,6 +11,11 @@ import (
 
 func (c *client[T]) Store(ctx context.Context,
 	request *file.StoreRequest) (*file.StoreResponse[T], errors.Error) {
+	if !c.config.enabled {
+		if !c.config.enabled {
+			return nil, notEnabledError
+		}
+	}
 	req := &pf.StoreRequest{
 		Category: request.Category,
 		Type:     request.Type,
