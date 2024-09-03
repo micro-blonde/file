@@ -6,6 +6,7 @@ import (
 
 	"github.com/ginger-core/compound/registry"
 	"github.com/ginger-core/errors"
+	"github.com/ginger-core/gateway"
 	"github.com/ginger-core/log"
 	"github.com/ginger-core/log/logger"
 	"github.com/micro-blonde/file"
@@ -20,6 +21,8 @@ type Client[T file.Model] interface {
 
 	Store(ctx context.Context,
 		request *file.StoreRequest) (*file.StoreResponse[T], errors.Error)
+	StoreFromRequest(request gateway.Request, key string,
+		storeRequest *file.StoreRequest) (*file.StoreResponse[T], errors.Error)
 
 	GetDownloadUrlByKey(key string) (string, errors.Error)
 }
