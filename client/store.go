@@ -73,5 +73,6 @@ func (c *client[T]) StoreFromRequest(request gateway.Request, key string,
 			WithTrace("uploadedFile.Read")
 	}
 	storeRequest.Data = data
+	storeRequest.Name = f.Filename
 	return c.Store(ctx, storeRequest)
 }
