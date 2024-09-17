@@ -57,7 +57,8 @@ func (c *client[T]) StoreFromRequest(request gateway.Request, key string,
 		if fErr == http.ErrMissingFile {
 			return nil, errors.Validation(fErr).
 				WithId("FileRequiredError").
-				WithMessage("file is missing to process your request")
+				WithMessage("file is missing to process your request").
+				WithCode(ErrorCodeMissingFile)
 		}
 		return nil, errors.Validation(fErr)
 	}
