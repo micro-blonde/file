@@ -1,8 +1,12 @@
 package file
 
-import "time"
+import (
+	"io"
+	"time"
+)
 
 type StoreRequest struct {
+	Reader    io.ReadSeeker
 	Data      []byte
 	Category  string
 	Type      string
